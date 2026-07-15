@@ -1,0 +1,153 @@
+import { Pressable, StyleSheet, View } from 'react-native';
+import { CalendarDays, Lock, UserRound } from 'lucide-react-native';
+import { AppText } from '../../../shared/components';
+import { colors } from '../../../shared/constants';
+import { ReportItem } from '../../../services/api';
+import { WorkingLock } from '../../../services/socket';
+
+type ReportCardProps = {
+  report: ReportItem;
+  lockedBy?: WorkingLock;
+  isLockedByOther: boolean;
+  isLockedByMe: boolean;
+  onPress: () => void;
+  labels: {
+    createdBy: string;
+    working: string;
+    youWorking: string;
+  };
+};
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+export function ReportCard({
+  report,
+  lockedBy,
+  isLockedByOther,
+  isLockedByMe,
+  onPress,
+  labels,
+}: ReportCardProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={isLockedByOther}
+      style={[
+        styles.card,
+        isLockedByOther && styles.cardDisabled,
+        (isLockedByMe || isLockedByOther) && styles.cardBusy,
+      ]}>
+      <View style={styles.top}>
+        <View style={styles.badge}>
+          <AppText weight="semiBold" style={styles.badgeText}>
+            {report.status.replace('_', ' ')}
+          </AppText>
+        </View>
+        {isLockedByOther || isLockedByMe ? (
+          <View style={styles.lockPill}>
+            {isLockedByOther ? (
+              <Lock color={colors.warning} size={14} />
+            ) : (
+              <UserRound color={colors.primary} size={14} />
+            )}
+            <AppText weight="semiBold" style={styles.lockText} numberOfLines={1}>
+              {isLockedByMe
+                ? labels.youWorking
+                : `${lockedBy?.userName || 'User'} ${labels.working}`}
+            </AppText>
+          </View>
+        ) : null}
+      </View>
+
+      <AppText weight="bold" style={styles.title}>
+        {report.locationName}
+      </AppText>
+
+      <View style={styles.metaRow}>
+        <CalendarDays color={colors.secondary} size={14} />
+        <AppText weight="regular" style={styles.meta}>
+          {formatDate(report.createdAt)}
+        </AppText>
+      </View>
+
+      <View style={styles.metaRow}>
+        <UserRound color={colors.secondary} size={14} />
+        <AppText weight="regular" style={styles.meta}>
+          {labels.createdBy}: {report.createdByName}
+        </AppText>
+      </View>
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 16,
+    padding: 16,
+    gap: 8,
+  },
+  cardDisabled: {
+    opacity: 0.62,
+  },
+  cardBusy: {
+    borderColor: `${colors.warning}88`,
+  },
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+    marginBottom: 2,
+  },
+  badge: {
+    backgroundColor: `${colors.primary}18`,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  badgeText: {
+    fontSize: 11,
+    color: colors.primary,
+    textTransform: 'capitalize',
+  },
+  lockPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: `${colors.warning}18`,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    maxWidth: '62%',
+  },
+  lockText: {
+    fontSize: 11,
+    color: colors.text,
+    flexShrink: 1,
+  },
+  title: {
+    fontSize: 17,
+    color: colors.text,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  meta: {
+    fontSize: 13,
+    color: colors.secondary,
+    flex: 1,
+  },
+});

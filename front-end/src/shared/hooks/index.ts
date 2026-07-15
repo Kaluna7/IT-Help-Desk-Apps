@@ -1,2 +1,1 @@
-// Shared hooks used across features
-export {};
+export { useResponsive } from '../utils/responsive';

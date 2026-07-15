@@ -1,28 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeScreen } from '../../../shared/components';
+import { useLanguage } from '../../../shared/i18n';
 
 export function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>IT Report</Text>
-      <Text style={styles.subtitle}>Home</Text>
-    </View>
-  );
-}
+  const { t } = useLanguage();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-});
+  return <SafeScreen title={t.home.title} subtitle={t.home.subtitle} />;
+}

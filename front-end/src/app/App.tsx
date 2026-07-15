@@ -1,24 +1,30 @@
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { HomeScreen } from '../features/home';
+import { enableScreens } from 'react-native-screens';
+import { colors } from '../shared/constants';
+import { LanguageProvider } from '../shared/i18n';
+import { AuthProvider } from '../features/auth';
+import { RootNavigator } from './RootNavigator';
+
+enableScreens();
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.container}>
-        <HomeScreen />
-      </View>
+      <LanguageProvider>
+        <AuthProvider>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor={colors.background}
+          />
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </AuthProvider>
+      </LanguageProvider>
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
