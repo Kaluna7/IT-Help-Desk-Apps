@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronLeft } from 'lucide-react-native';
-import { colors, fonts } from '../constants';
+import { colors, fonts, radii, spacing, typeScale } from '../constants';
 import { useResponsive } from '../hooks';
 import { AppText } from './AppText';
 
@@ -53,7 +53,7 @@ export function SafeScreen({
               hitSlop={12}
               style={styles.backButton}
               android_ripple={{ color: 'transparent' }}>
-              <ChevronLeft color={colors.text} size={isSmall ? 22 : 24} />
+              <ChevronLeft color={colors.text} size={isSmall ? 20 : 22} strokeWidth={1.75} />
             </Pressable>
           ) : null}
           <View style={styles.headerText}>
@@ -116,20 +116,24 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 24,
+    paddingBottom: spacing.xl,
   },
   header: {
-    paddingTop: 12,
-    paddingBottom: 16,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.lg,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+    marginBottom: spacing.lg,
   },
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   backButton: {
-    marginRight: 8,
-    width: 32,
-    height: 32,
+    marginRight: spacing.sm,
+    width: 36,
+    height: 36,
+    borderRadius: radii.md,
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
@@ -139,17 +143,18 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   headerRight: {
-    marginLeft: 8,
+    marginLeft: spacing.sm,
     flexShrink: 0,
   },
   title: {
     color: colors.text,
     fontFamily: fonts.bold,
+    letterSpacing: -0.3,
   },
   subtitle: {
-    marginTop: 6,
-    color: colors.secondary,
-    lineHeight: 22,
+    marginTop: spacing.xs,
+    color: colors.muted,
+    lineHeight: typeScale.body.lineHeight,
   },
   content: {
     flex: 1,

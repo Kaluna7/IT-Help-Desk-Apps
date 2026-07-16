@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { Search } from 'lucide-react-native';
 import { AppTextInput } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useResponsive } from '../../../shared/hooks';
 
 type HistorySearchBarProps = {
@@ -19,12 +19,12 @@ export function HistorySearchBar({
 
   return (
     <View style={[styles.wrap, { height: isSmall ? 44 : 48 }]}>
-      <Search color={colors.secondary} size={ms(18)} />
+      <Search color={colors.muted} size={ms(18)} strokeWidth={1.75} />
       <AppTextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor={colors.secondary}
+        placeholderTextColor={colors.muted}
         style={[styles.input, { fontSize: ms(15) }]}
         autoCapitalize="none"
         autoCorrect={false}
@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
   wrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: spacing.md,
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 14,
-    paddingHorizontal: 14,
+    borderRadius: radii.md,
+    paddingHorizontal: spacing.lg,
     width: '100%',
   },
   input: {

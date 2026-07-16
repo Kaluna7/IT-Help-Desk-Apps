@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { ChevronDown, MapPin, Plus, X } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { createLocation, LocationItem } from '../../../services/api';
 
 type CreateReportModalProps = {
@@ -115,7 +115,7 @@ export function CreateReportModal({
               {labels.title}
             </AppText>
             <Pressable onPress={onClose} hitSlop={10} style={styles.closeBtn}>
-              <X color={colors.secondary} size={20} />
+              <X color={colors.muted} size={20} />
             </Pressable>
           </View>
 
@@ -130,7 +130,7 @@ export function CreateReportModal({
               setShowAddLocation(false);
             }}>
             <View style={styles.dropdownLeft}>
-              <MapPin color={colors.primary} size={18} />
+              <MapPin color={colors.accent} size={18} />
               <AppText
                 weight="medium"
                 style={[styles.dropdownText, !selected && styles.placeholder]}
@@ -138,7 +138,7 @@ export function CreateReportModal({
                 {selected?.name || labels.selectLocation}
               </AppText>
             </View>
-            <ChevronDown color={colors.secondary} size={18} />
+            <ChevronDown color={colors.muted} size={18} />
           </Pressable>
 
           {dropdownOpen ? (
@@ -192,7 +192,7 @@ export function CreateReportModal({
                 value={newLocationName}
                 onChangeText={setNewLocationName}
                 placeholder={labels.newLocationName}
-                placeholderTextColor={colors.secondary}
+                placeholderTextColor={colors.muted}
                 style={styles.input}
               />
               <Pressable
@@ -203,10 +203,10 @@ export function CreateReportModal({
                 disabled={!newLocationName.trim() || savingLocation}
                 onPress={handleSaveLocation}>
                 {savingLocation ? (
-                  <ActivityIndicator color={colors.background} />
+                  <ActivityIndicator color={colors.onPrimary} />
                 ) : (
                   <>
-                    <Plus color={colors.background} size={16} />
+                    <Plus color={colors.onPrimary} size={16} />
                     <AppText weight="semiBold" style={styles.secondaryBtnText}>
                       {labels.saveLocation}
                     </AppText>
@@ -233,7 +233,7 @@ export function CreateReportModal({
               disabled={!canCreate}
               onPress={handleCreate}>
               {creating ? (
-                <ActivityIndicator color={colors.background} />
+                <ActivityIndicator color={colors.onPrimary} />
               ) : (
                 <AppText weight="bold" style={styles.createText}>
                   {labels.create}
@@ -252,13 +252,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(17, 24, 39, 0.45)',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.xl,
   },
   sheet: {
     backgroundColor: colors.background,
-    borderRadius: 20,
-    padding: 20,
-    borderWidth: 1,
+    borderRadius: radii.lg,
+    padding: spacing.xl,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
   },
   header: {
@@ -274,21 +274,21 @@ const styles = StyleSheet.create({
   closeBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: radii.lg,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.card,
   },
   label: {
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
     marginBottom: 8,
   },
   dropdown: {
     minHeight: 48,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 14,
+    borderRadius: radii.md,
     backgroundColor: colors.card,
     paddingHorizontal: 14,
     flexDirection: 'row',
@@ -308,13 +308,13 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   placeholder: {
-    color: colors.secondary,
+    color: colors.muted,
   },
   dropdownList: {
     marginTop: 8,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 14,
+    borderRadius: radii.md,
     backgroundColor: colors.background,
     overflow: 'hidden',
   },
@@ -324,11 +324,11 @@ const styles = StyleSheet.create({
   option: {
     paddingHorizontal: 14,
     paddingVertical: 12,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.border,
   },
   optionActive: {
-    backgroundColor: `${colors.primary}12`,
+    backgroundColor: `${colors.accent}18`,
   },
   optionText: {
     fontSize: 14,
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
   },
   link: {
     fontSize: 13,
-    color: colors.primary,
+    color: colors.accent,
     textDecorationLine: 'underline',
   },
   hintRow: {
@@ -347,13 +347,13 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
   },
   addBox: {
     marginTop: 12,
     padding: 14,
-    borderRadius: 14,
-    borderWidth: 1,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     backgroundColor: colors.card,
     gap: 10,
@@ -364,9 +364,9 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 44,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 12,
+    borderRadius: radii.md,
     paddingHorizontal: 12,
     backgroundColor: colors.background,
     color: colors.text,
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   },
   secondaryBtn: {
     height: 42,
-    borderRadius: 12,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   secondaryBtnText: {
-    color: colors.background,
+    color: colors.onPrimary,
     fontSize: 14,
   },
   error: {
@@ -398,27 +398,27 @@ const styles = StyleSheet.create({
   cancelBtn: {
     flex: 1,
     height: 46,
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.card,
   },
   cancelText: {
-    color: colors.secondary,
+    color: colors.muted,
     fontSize: 14,
   },
   createBtn: {
     flex: 1,
     height: 46,
-    borderRadius: 12,
+    borderRadius: radii.md,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.primary,
   },
   createText: {
-    color: colors.background,
+    color: colors.onPrimary,
     fontSize: 14,
   },
   btnDisabled: {

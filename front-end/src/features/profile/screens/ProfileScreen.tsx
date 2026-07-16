@@ -10,7 +10,7 @@ import {
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Camera, Check, Languages, LogOut, UserRound } from 'lucide-react-native';
 import { AppText, SafeScreen } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useResponsive } from '../../../shared/hooks';
 import { Language, useLanguage } from '../../../shared/i18n';
 import { useAuth } from '../../auth';
@@ -113,14 +113,14 @@ export function ProfileScreen() {
             <Image source={{ uri: user.avatar }} style={styles.avatarImage} />
           ) : (
             <View style={styles.avatarFallback}>
-              <UserRound color={colors.primary} size={36} />
+              <UserRound color={colors.accent} size={36} />
             </View>
           )}
           <View style={styles.cameraBadge}>
             {uploading ? (
-              <ActivityIndicator color={colors.background} size="small" />
+              <ActivityIndicator color={colors.onPrimary} size="small" />
             ) : (
-              <Camera color={colors.background} size={14} />
+              <Camera color={colors.onPrimary} size={14} />
             )}
           </View>
         </Pressable>
@@ -148,7 +148,7 @@ export function ProfileScreen() {
                 height: ms(40),
               },
             ]}>
-            <Languages color={colors.primary} size={ms(20)} />
+            <Languages color={colors.accent} size={ms(20)} />
           </View>
           <View style={styles.sectionText}>
             <AppText
@@ -209,7 +209,7 @@ export function ProfileScreen() {
                 </View>
                 {active ? (
                   <View style={styles.checkWrap}>
-                    <Check color={colors.background} size={14} strokeWidth={3} />
+                    <Check color={colors.onPrimary} size={14} strokeWidth={3} />
                   </View>
                 ) : (
                   <View style={styles.checkPlaceholder} />
@@ -233,31 +233,31 @@ export function ProfileScreen() {
 const styles = StyleSheet.create({
   profileCard: {
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 16,
-    paddingVertical: 24,
-    paddingHorizontal: 16,
+    borderRadius: radii.lg,
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.lg,
     alignItems: 'center',
-    marginBottom: 14,
+    marginBottom: spacing.md,
   },
   avatarWrap: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    marginBottom: 14,
+    width: 88,
+    height: 88,
+    borderRadius: radii.full,
+    marginBottom: spacing.md,
   },
   avatarImage: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
+    width: 88,
+    height: 88,
+    borderRadius: radii.full,
     backgroundColor: colors.border,
   },
   avatarFallback: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: `${colors.primary}18`,
+    width: 88,
+    height: 88,
+    borderRadius: radii.full,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -265,45 +265,46 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 0,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 28,
+    height: 28,
+    borderRadius: radii.sm,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: colors.background,
+    borderColor: colors.card,
   },
   name: {
-    fontSize: 20,
+    fontSize: 18,
     color: colors.text,
+    letterSpacing: -0.2,
   },
   email: {
-    marginTop: 4,
+    marginTop: spacing.xs,
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
   },
   changeHint: {
-    marginTop: 10,
+    marginTop: spacing.sm,
     fontSize: 12,
-    color: colors.primary,
+    color: colors.accent,
   },
   section: {
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 16,
+    borderRadius: radii.lg,
     width: '100%',
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 12,
-    marginBottom: 16,
+    gap: spacing.md,
+    marginBottom: spacing.lg,
   },
   sectionIcon: {
-    borderRadius: 12,
-    backgroundColor: `${colors.primary}18`,
+    borderRadius: radii.md,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
@@ -316,32 +317,32 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   sectionDesc: {
-    marginTop: 4,
+    marginTop: spacing.xs,
     lineHeight: 18,
-    color: colors.secondary,
+    color: colors.muted,
   },
   options: {
-    gap: 10,
+    gap: spacing.sm,
   },
   option: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: spacing.md,
     backgroundColor: colors.background,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 14,
-    padding: 14,
+    borderRadius: radii.md,
+    padding: spacing.md,
     width: '100%',
   },
   optionActive: {
     borderColor: colors.primary,
-    backgroundColor: `${colors.primary}08`,
+    backgroundColor: colors.surface,
   },
   flagBadge: {
-    borderRadius: 12,
+    borderRadius: radii.md,
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
@@ -352,10 +353,10 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   flagText: {
-    color: colors.secondary,
+    color: colors.muted,
   },
   flagTextActive: {
-    color: colors.background,
+    color: colors.onPrimary,
   },
   optionText: {
     flex: 1,
@@ -365,40 +366,40 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   optionTitleActive: {
-    color: colors.hover,
+    color: colors.primary,
   },
   optionNative: {
     marginTop: 2,
-    color: colors.secondary,
+    color: colors.muted,
   },
   checkWrap: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 22,
+    height: 22,
+    borderRadius: radii.sm,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
   },
   checkPlaceholder: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 1,
+    width: 22,
+    height: 22,
+    borderRadius: radii.sm,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     flexShrink: 0,
   },
   logoutBtn: {
-    marginTop: 14,
+    marginTop: spacing.md,
     height: 48,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: `${colors.danger}55`,
-    backgroundColor: `${colors.danger}10`,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: `${colors.danger}40`,
+    backgroundColor: `${colors.danger}08`,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: spacing.sm,
   },
   logoutText: {
     color: colors.danger,

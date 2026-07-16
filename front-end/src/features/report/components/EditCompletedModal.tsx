@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Pencil, X } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors, fonts } from '../../../shared/constants';
+import { colors, fonts, radii, spacing } from '../../../shared/constants';
 import { ReportItem, updateReport } from '../../../services/api';
 
 type EditCompletedModalProps = {
@@ -82,13 +82,13 @@ export function EditCompletedModal({
         <View style={styles.card}>
           <View style={styles.header}>
             <View style={styles.headerLeft}>
-              <Pencil color={colors.primary} size={18} />
+              <Pencil color={colors.accent} size={18} />
               <AppText weight="bold" style={styles.title}>
                 {labels.title}
               </AppText>
             </View>
             <Pressable onPress={onClose} hitSlop={10}>
-              <X color={colors.secondary} size={20} />
+              <X color={colors.muted} size={20} />
             </Pressable>
           </View>
 
@@ -115,7 +115,7 @@ export function EditCompletedModal({
             style={[styles.input, styles.textArea]}
             multiline
             placeholder="—"
-            placeholderTextColor={colors.secondary}
+            placeholderTextColor={colors.muted}
           />
 
           <AppText weight="semiBold" style={styles.label}>
@@ -126,7 +126,7 @@ export function EditCompletedModal({
             onChangeText={setLeaderSign}
             style={styles.input}
             placeholder="—"
-            placeholderTextColor={colors.secondary}
+            placeholderTextColor={colors.muted}
           />
 
           {error ? (
@@ -173,12 +173,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'rgba(15, 23, 42, 0.45)',
     justifyContent: 'center',
-    padding: 20,
+    padding: spacing.xl,
   },
   card: {
     backgroundColor: colors.background,
-    borderRadius: 18,
-    padding: 18,
+    borderRadius: radii.lg,
+    padding: spacing.lg,
     gap: 8,
   },
   header: {
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 6,
     fontSize: 12,
-    color: colors.secondary,
+    color: colors.muted,
   },
   value: {
     fontSize: 15,
@@ -208,9 +208,9 @@ const styles = StyleSheet.create({
   },
   input: {
     minHeight: 46,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 12,
+    borderRadius: radii.md,
     paddingHorizontal: 12,
     backgroundColor: colors.card,
     color: colors.text,
@@ -229,25 +229,25 @@ const styles = StyleSheet.create({
   primaryBtn: {
     marginTop: 10,
     height: 48,
-    borderRadius: 12,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   primaryBtnText: {
-    color: colors.background,
+    color: colors.onPrimary,
     fontSize: 14,
   },
   secondaryBtn: {
     height: 48,
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   secondaryBtnText: {
-    color: colors.primary,
+    color: colors.accent,
     fontSize: 14,
   },
   disabled: {
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   cancelText: {
-    color: colors.secondary,
+    color: colors.muted,
     fontSize: 13,
   },
 });

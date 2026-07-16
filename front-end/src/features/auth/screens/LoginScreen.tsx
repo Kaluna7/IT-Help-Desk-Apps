@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LockKeyhole, Mail } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useLanguage } from '../../../shared/i18n';
 import { useAuth } from '../AuthContext';
 import type { AuthStackParamList } from '../AuthNavigator';
@@ -98,7 +98,7 @@ export function LoginScreen() {
         disabled={!canSubmit}
         onPress={handleLogin}>
         {loading ? (
-          <ActivityIndicator color={colors.background} />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <AppText weight="bold" style={styles.buttonText}>
             {labels.button}
@@ -125,13 +125,13 @@ export function LoginScreen() {
 
 const styles = StyleSheet.create({
   errorBox: {
-    marginBottom: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 12,
-    backgroundColor: `${colors.danger}12`,
-    borderWidth: 1,
-    borderColor: `${colors.danger}33`,
+    marginBottom: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm + 2,
+    borderRadius: radii.md,
+    backgroundColor: `${colors.danger}10`,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: `${colors.danger}40`,
   },
   error: {
     color: colors.danger,
@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   button: {
-    marginTop: 8,
+    marginTop: spacing.sm,
     height: 52,
-    borderRadius: 14,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
@@ -150,27 +150,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.hover,
   },
   buttonDisabled: {
-    backgroundColor: '#D1D5DB',
+    backgroundColor: colors.disabled,
   },
   buttonText: {
-    color: colors.background,
-    fontSize: 16,
-    letterSpacing: 0.2,
+    color: colors.onPrimary,
+    fontSize: 15,
+    letterSpacing: 0.1,
   },
   footer: {
-    marginTop: 22,
+    marginTop: spacing.xl,
     alignItems: 'center',
-    gap: 6,
+    gap: spacing.xs,
   },
   footerText: {
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
   },
   footerLinkWrap: {
-    paddingVertical: 2,
+    paddingVertical: spacing.xs,
   },
   link: {
     fontSize: 14,
-    color: colors.primary,
+    color: colors.accent,
   },
 });

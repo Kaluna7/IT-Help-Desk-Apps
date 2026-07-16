@@ -1,20 +1,24 @@
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { AppText } from '../../../shared/components';
 import { colors, radii, spacing } from '../../../shared/constants';
-import { HistoryStatus } from '../types';
+import type { WorkPeriod } from '../types';
 
 type FilterOption = {
   label: string;
-  value: HistoryStatus;
+  value: WorkPeriod;
 };
 
-type HistoryFilterProps = {
+type WorkLocationFilterProps = {
   options: FilterOption[];
-  value: HistoryStatus;
-  onChange: (value: HistoryStatus) => void;
+  value: WorkPeriod;
+  onChange: (value: WorkPeriod) => void;
 };
 
-export function HistoryFilter({ options, value, onChange }: HistoryFilterProps) {
+export function WorkLocationFilter({
+  options,
+  value,
+  onChange,
+}: WorkLocationFilterProps) {
   return (
     <ScrollView
       horizontal
@@ -47,19 +51,19 @@ const styles = StyleSheet.create({
   },
   chip: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
-    borderRadius: radii.sm,
-    paddingHorizontal: spacing.md,
+    borderColor: colors.borderSoft,
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: radii.lg,
+    paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
   },
   chipActive: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: colors.success,
+    borderColor: colors.success,
   },
   chipText: {
     fontSize: 13,
-    color: colors.muted,
+    color: colors.textSecondary,
   },
   chipTextActive: {
     color: colors.onPrimary,

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FolderOpen } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useResponsive } from '../../../shared/hooks';
 import { HistoryItem, HistoryStatus } from '../types';
 import { filterHistoryItems, groupByMonth } from '../utils';
@@ -70,7 +70,7 @@ export function HistoryListPanel({
       {folders.length === 0 ? (
         <View style={styles.empty}>
           <View style={[styles.emptyIcon, { width: ms(56), height: ms(56) }]}>
-            <FolderOpen color={colors.secondary} size={ms(28)} />
+            <FolderOpen color={colors.muted} size={ms(28)} />
           </View>
           <AppText weight="bold" style={[styles.emptyTitle, { fontSize: ms(16) }]}>
             {emptyTitle}
@@ -113,31 +113,31 @@ const styles = StyleSheet.create({
   empty: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 48,
-    paddingHorizontal: 24,
+    paddingVertical: spacing.xxl,
+    paddingHorizontal: spacing.xl,
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 16,
+    borderRadius: radii.lg,
     width: '100%',
   },
   emptyIcon: {
-    borderRadius: 16,
+    borderRadius: radii.lg,
     backgroundColor: colors.background,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 14,
+    marginBottom: spacing.md,
   },
   emptyTitle: {
     color: colors.text,
     textAlign: 'center',
   },
   emptyMessage: {
-    marginTop: 6,
+    marginTop: spacing.xs,
     lineHeight: 20,
-    color: colors.secondary,
+    color: colors.muted,
     textAlign: 'center',
   },
 });

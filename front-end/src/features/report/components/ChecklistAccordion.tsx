@@ -1,13 +1,17 @@
 import { useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import {
+  AppWindow,
   Camera,
   Check,
   ChevronDown,
   ChevronRight,
+  Cpu,
+  Wifi,
+  type LucideIcon,
 } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing, typeScale } from '../../../shared/constants';
 import { fileUrl } from '../../../services/api';
 import {
   CHECKLIST_SECTIONS,
@@ -27,240 +31,302 @@ type ChecklistAccordionProps = {
   language: 'en' | 'id';
 };
 
+const SECTION_META: Record<
+  string,
+  { label: string; icon: LucideIcon }
+> = {
+  hardware: { label: 'HARDWARE', icon: Cpu },
+  software: { label: 'SOFTWARE', icon: AppWindow },
+  internet: { label: 'NETWORK', icon: Wifi },
+};
+
 export function ChecklistAccordion({
   checklist,
   onChangeStatus,
   onCapturePhoto,
   language,
 }: ChecklistAccordionProps) {
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    hardware: true,
-    software: false,
-    internet: false,
-  });
+  const [activeSection, setActiveSection] = useState<string>(
+    CHECKLIST_SECTIONS[0].id,
+  );
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
-
-  const toggleSection = (id: string) => {
-    setOpenSections(prev => ({ ...prev, [id]: !prev[id] }));
-  };
 
   const toggleItem = (key: string) => {
     setOpenItems(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const active = CHECKLIST_SECTIONS.find(
+    section => section.id === activeSection,
+  );
+
   return (
     <View style={styles.wrap}>
-      {CHECKLIST_SECTIONS.map(section => {
-        const sectionOpen = openSections[section.id] ?? false;
-        const complete = isSectionComplete(checklist, section.id);
+      <View style={styles.heroRow}>
+        {CHECKLIST_SECTIONS.map(section => {
+          const meta = SECTION_META[section.id];
+          const Icon = meta?.icon ?? Cpu;
+          const selected = activeSection === section.id;
+          const complete = isSectionComplete(checklist, section.id);
 
-        return (
-          <View key={section.id} style={styles.section}>
+          return (
             <Pressable
-              style={styles.sectionHeader}
-              onPress={() => toggleSection(section.id)}
+              key={section.id}
+              style={[styles.heroBtn, selected && styles.heroBtnActive]}
+              onPress={() => setActiveSection(section.id)}
               android_ripple={{ color: 'transparent' }}>
-              <View style={styles.headerLeft}>
-                <View
-                  style={[
-                    styles.checkBadge,
-                    complete && styles.checkBadgeDone,
-                  ]}>
-                  {complete ? (
-                    <Check color={colors.background} size={14} strokeWidth={3} />
-                  ) : null}
+              <Icon
+                color={selected ? colors.onPrimary : colors.primary}
+                size={20}
+                strokeWidth={1.75}
+              />
+              <AppText
+                weight="semiBold"
+                style={[styles.heroLabel, selected && styles.heroLabelActive]}>
+                {meta?.label ?? section.title}
+              </AppText>
+              {complete ? (
+                <View style={[styles.heroBadge, selected && styles.heroBadgeOnPrimary]}>
+                  <Check
+                    color={selected ? colors.primary : colors.card}
+                    size={10}
+                    strokeWidth={3}
+                  />
                 </View>
-                <AppText weight="bold" style={styles.sectionTitle}>
-                  {section.title}
-                </AppText>
-              </View>
-              {sectionOpen ? (
-                <ChevronDown color={colors.secondary} size={18} />
               ) : (
-                <ChevronRight color={colors.secondary} size={18} />
+                <View style={[styles.heroDot, selected && styles.heroDotSelected]} />
               )}
             </Pressable>
+          );
+        })}
+      </View>
 
-            {sectionOpen
-              ? section.items.map(item => {
-                  const value = checklist[item.key] || {};
-                  const options = STATUS_OPTIONS[item.key] || ['Good', 'Bad'];
-                  const itemOpen = openItems[item.key] ?? false;
-                  const photo = fileUrl(value.photoUrl);
-
-                  return (
-                    <View key={item.key} style={styles.itemBlock}>
-                      <Pressable
-                        style={styles.itemHeader}
-                        onPress={() => toggleItem(item.key)}
-                        android_ripple={{ color: 'transparent' }}>
-                        <View style={styles.itemHeaderLeft}>
-                          <AppText weight="semiBold" style={styles.itemLabel}>
-                            {item.label}
-                          </AppText>
-                          {item.requiresPhoto ? (
-                            <AppText weight="medium" style={styles.photoRequired}>
-                              {language === 'id' ? 'Wajib foto' : 'Photo required'}
-                            </AppText>
-                          ) : null}
-                        </View>
-                        <View style={styles.itemHeaderRight}>
-                          <AppText weight="medium" style={styles.selectedValue}>
-                            {value.status ||
-                              (language === 'id' ? 'Pilih' : 'Select')}
-                          </AppText>
-                          {itemOpen ? (
-                            <ChevronDown color={colors.secondary} size={16} />
-                          ) : (
-                            <ChevronRight color={colors.secondary} size={16} />
-                          )}
-                        </View>
-                      </Pressable>
-
-                      {itemOpen ? (
-                        <View style={styles.dropdownPanel}>
-                          {options.map(option => {
-                            const active = value.status === option;
-                            return (
-                              <Pressable
-                                key={option}
-                                onPress={() => {
-                                  onChangeStatus(item.key, option);
-                                  setOpenItems(prev => ({
-                                    ...prev,
-                                    [item.key]: false,
-                                  }));
-                                }}
-                                style={[
-                                  styles.optionRow,
-                                  active && styles.optionRowActive,
-                                ]}>
-                                <AppText
-                                  weight="semiBold"
-                                  style={[
-                                    styles.optionText,
-                                    active && styles.optionTextActive,
-                                  ]}>
-                                  {option}
-                                </AppText>
-                                {active ? (
-                                  <Check
-                                    color={colors.background}
-                                    size={14}
-                                    strokeWidth={3}
-                                  />
-                                ) : null}
-                              </Pressable>
-                            );
-                          })}
-
-                          {item.requiresPhoto ? (
-                            <View style={styles.photoBlock}>
-                              {photo ? (
-                                <Image
-                                  source={{ uri: photo }}
-                                  style={styles.photo}
-                                />
-                              ) : (
-                                <View style={styles.photoEmpty}>
-                                  <Camera color={colors.secondary} size={22} />
-                                  <AppText
-                                    weight="regular"
-                                    style={styles.photoEmptyText}>
-                                    {language === 'id'
-                                      ? `Belum ada foto ${item.label}`
-                                      : `No ${item.label} photo yet`}
-                                  </AppText>
-                                </View>
-                              )}
-                              <Pressable
-                                style={styles.cameraBtn}
-                                onPress={() => {
-                                  onCapturePhoto(item.key);
-                                }}
-                                hitSlop={8}>
-                                <Camera color={colors.background} size={16} />
-                                <AppText
-                                  weight="semiBold"
-                                  style={styles.cameraBtnText}>
-                                  {photo
-                                    ? language === 'id'
-                                      ? 'Ganti foto'
-                                      : 'Change photo'
-                                    : language === 'id'
-                                      ? 'Tambah foto'
-                                      : 'Add photo'}
-                                </AppText>
-                              </Pressable>
-                            </View>
-                          ) : null}
-                        </View>
-                      ) : null}
-                    </View>
-                  );
-                })
-              : null}
+      {active ? (
+        <View style={styles.contentCard}>
+          <View style={styles.contentHeader}>
+            <AppText weight="semiBold" style={styles.contentTitle}>
+              {active.title}
+            </AppText>
+            <AppText weight="regular" style={styles.contentHint}>
+              {language === 'id'
+                ? `${active.items.length} item`
+                : `${active.items.length} items`}
+            </AppText>
           </View>
-        );
-      })}
+
+          {active.items.map(item => {
+            const value = checklist[item.key] || {};
+            const options = STATUS_OPTIONS[item.key] || ['Good', 'Bad'];
+            const itemOpen = openItems[item.key] ?? false;
+            const photo = fileUrl(value.photoUrl);
+
+            return (
+              <View key={item.key} style={styles.itemBlock}>
+                <Pressable
+                  style={styles.itemHeader}
+                  onPress={() => toggleItem(item.key)}
+                  android_ripple={{ color: 'transparent' }}>
+                  <View style={styles.itemHeaderLeft}>
+                    <AppText weight="medium" style={styles.itemLabel}>
+                      {item.label}
+                    </AppText>
+                    {item.requiresPhoto ? (
+                      <AppText weight="regular" style={styles.photoRequired}>
+                        {language === 'id' ? 'Wajib foto' : 'Photo required'}
+                      </AppText>
+                    ) : null}
+                  </View>
+                  <View style={styles.itemHeaderRight}>
+                    <AppText weight="medium" style={styles.selectedValue}>
+                      {value.status ||
+                        (language === 'id' ? 'Pilih' : 'Select')}
+                    </AppText>
+                    {itemOpen ? (
+                      <ChevronDown color={colors.muted} size={16} strokeWidth={1.75} />
+                    ) : (
+                      <ChevronRight color={colors.muted} size={16} strokeWidth={1.75} />
+                    )}
+                  </View>
+                </Pressable>
+
+                {itemOpen ? (
+                  <View style={styles.dropdownPanel}>
+                    {options.map(option => {
+                      const optionActive = value.status === option;
+                      return (
+                        <Pressable
+                          key={option}
+                          onPress={() => {
+                            onChangeStatus(item.key, option);
+                            setOpenItems(prev => ({
+                              ...prev,
+                              [item.key]: false,
+                            }));
+                          }}
+                          style={[
+                            styles.optionRow,
+                            optionActive && styles.optionRowActive,
+                          ]}>
+                          <AppText
+                            weight="medium"
+                            style={[
+                              styles.optionText,
+                              optionActive && styles.optionTextActive,
+                            ]}>
+                            {option}
+                          </AppText>
+                          {optionActive ? (
+                            <Check
+                              color={colors.onPrimary}
+                              size={14}
+                              strokeWidth={2.5}
+                            />
+                          ) : null}
+                        </Pressable>
+                      );
+                    })}
+
+                    {item.requiresPhoto ? (
+                      <View style={styles.photoBlock}>
+                        {photo ? (
+                          <Image
+                            source={{ uri: photo }}
+                            style={styles.photo}
+                          />
+                        ) : (
+                          <View style={styles.photoEmpty}>
+                            <Camera color={colors.muted} size={20} strokeWidth={1.75} />
+                            <AppText
+                              weight="regular"
+                              style={styles.photoEmptyText}>
+                              {language === 'id'
+                                ? `Belum ada foto ${item.label}`
+                                : `No ${item.label} photo yet`}
+                            </AppText>
+                          </View>
+                        )}
+                        <Pressable
+                          style={styles.cameraBtn}
+                          onPress={() => {
+                            onCapturePhoto(item.key);
+                          }}
+                          hitSlop={8}>
+                          <Camera color={colors.onPrimary} size={16} strokeWidth={1.75} />
+                          <AppText
+                            weight="semiBold"
+                            style={styles.cameraBtnText}>
+                            {photo
+                              ? language === 'id'
+                                ? 'Ganti foto'
+                                : 'Change photo'
+                              : language === 'id'
+                                ? 'Tambah foto'
+                                : 'Add photo'}
+                          </AppText>
+                        </Pressable>
+                      </View>
+                    ) : null}
+                  </View>
+                ) : null}
+              </View>
+            );
+          })}
+        </View>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    gap: 12,
+    gap: spacing.md,
   },
-  section: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 16,
-    backgroundColor: colors.card,
-    overflow: 'hidden',
-  },
-  sectionHeader: {
-    paddingHorizontal: 14,
-    paddingVertical: 14,
+  heroRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: colors.background,
+    gap: spacing.sm,
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
+  heroBtn: {
     flex: 1,
-  },
-  checkBadge: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 1.5,
+    minHeight: 88,
+    borderRadius: radii.lg,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
+    backgroundColor: colors.card,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.sm,
+    gap: spacing.sm,
+  },
+  heroBtnActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
+  },
+  heroLabel: {
+    ...typeScale.micro,
+    color: colors.text,
+    letterSpacing: 0.6,
+    textAlign: 'center',
+  },
+  heroLabelActive: {
+    color: colors.onPrimary,
+  },
+  heroBadge: {
+    width: 16,
+    height: 16,
+    borderRadius: radii.sm,
+    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  checkBadgeDone: {
+  heroBadgeOnPrimary: {
     backgroundColor: colors.primary,
-    borderColor: colors.primary,
   },
-  sectionTitle: {
-    fontSize: 14,
-    color: colors.text,
-    letterSpacing: 0.3,
+  heroDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.border,
   },
-  itemBlock: {
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
+  heroDotSelected: {
+    backgroundColor: 'rgba(255,255,255,0.45)',
   },
-  itemHeader: {
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+  contentCard: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    borderRadius: radii.lg,
+    backgroundColor: colors.card,
+    overflow: 'hidden',
+  },
+  contentHeader: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 10,
+    gap: spacing.sm,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+  },
+  contentTitle: {
+    ...typeScale.label,
+    color: colors.text,
+    letterSpacing: 0.3,
+  },
+  contentHint: {
+    ...typeScale.caption,
+    color: colors.muted,
+  },
+  itemBlock: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.border,
+  },
+  itemHeader: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing.md,
     backgroundColor: colors.card,
   },
   itemHeaderLeft: {
@@ -270,32 +336,32 @@ const styles = StyleSheet.create({
   itemHeaderRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: spacing.xs,
   },
   itemLabel: {
-    fontSize: 13,
+    ...typeScale.label,
     color: colors.text,
   },
   photoRequired: {
-    fontSize: 11,
+    ...typeScale.micro,
     color: colors.warning,
   },
   selectedValue: {
-    fontSize: 12,
+    ...typeScale.caption,
     color: colors.primary,
   },
   dropdownPanel: {
-    paddingHorizontal: 12,
-    paddingBottom: 12,
-    gap: 6,
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.md,
+    gap: spacing.sm,
     backgroundColor: colors.background,
   },
   optionRow: {
-    minHeight: 42,
-    borderRadius: 10,
-    borderWidth: 1,
+    minHeight: 44,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    paddingHorizontal: 12,
+    paddingHorizontal: spacing.md,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -306,48 +372,48 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   optionText: {
-    fontSize: 13,
+    ...typeScale.label,
     color: colors.text,
   },
   optionTextActive: {
-    color: colors.background,
+    color: colors.onPrimary,
   },
   photoBlock: {
-    marginTop: 6,
-    gap: 10,
+    marginTop: spacing.xs,
+    gap: spacing.sm,
   },
   photo: {
     width: '100%',
     height: 180,
-    borderRadius: 12,
+    borderRadius: radii.md,
     backgroundColor: colors.border,
   },
   photoEmpty: {
-    height: 120,
-    borderRadius: 12,
-    borderWidth: 1,
+    height: 112,
+    borderRadius: radii.md,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     borderStyle: 'dashed',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: spacing.sm,
     backgroundColor: colors.card,
   },
   photoEmptyText: {
-    fontSize: 12,
-    color: colors.secondary,
+    ...typeScale.caption,
+    color: colors.muted,
   },
   cameraBtn: {
-    height: 42,
-    borderRadius: 12,
+    height: 44,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
+    gap: spacing.sm,
   },
   cameraBtnText: {
-    color: colors.background,
+    color: colors.onPrimary,
     fontSize: 13,
   },
 });

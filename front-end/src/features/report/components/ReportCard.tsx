@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { CalendarDays, Lock, UserRound } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing, typeScale } from '../../../shared/constants';
 import { ReportItem } from '../../../services/api';
 import { WorkingLock } from '../../../services/socket';
 
@@ -47,18 +47,18 @@ export function ReportCard({
       ]}>
       <View style={styles.top}>
         <View style={styles.badge}>
-          <AppText weight="semiBold" style={styles.badgeText}>
+          <AppText weight="medium" style={styles.badgeText}>
             {report.status.replace('_', ' ')}
           </AppText>
         </View>
         {isLockedByOther || isLockedByMe ? (
           <View style={styles.lockPill}>
             {isLockedByOther ? (
-              <Lock color={colors.warning} size={14} />
+              <Lock color={colors.warning} size={13} strokeWidth={1.75} />
             ) : (
-              <UserRound color={colors.primary} size={14} />
+              <UserRound color={colors.accent} size={13} strokeWidth={1.75} />
             )}
-            <AppText weight="semiBold" style={styles.lockText} numberOfLines={1}>
+            <AppText weight="medium" style={styles.lockText} numberOfLines={1}>
               {isLockedByMe
                 ? labels.youWorking
                 : `${lockedBy?.userName || 'User'} ${labels.working}`}
@@ -67,19 +67,19 @@ export function ReportCard({
         ) : null}
       </View>
 
-      <AppText weight="bold" style={styles.title}>
+      <AppText weight="semiBold" style={styles.title}>
         {report.locationName}
       </AppText>
 
       <View style={styles.metaRow}>
-        <CalendarDays color={colors.secondary} size={14} />
+        <CalendarDays color={colors.muted} size={14} strokeWidth={1.75} />
         <AppText weight="regular" style={styles.meta}>
           {formatDate(report.createdAt)}
         </AppText>
       </View>
 
       <View style={styles.metaRow}>
-        <UserRound color={colors.secondary} size={14} />
+        <UserRound color={colors.muted} size={14} strokeWidth={1.75} />
         <AppText weight="regular" style={styles.meta}>
           {labels.createdBy}: {report.createdByName}
         </AppText>
@@ -91,63 +91,65 @@ export function ReportCard({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 16,
-    padding: 16,
-    gap: 8,
+    borderRadius: radii.lg,
+    padding: spacing.lg,
+    gap: spacing.sm,
   },
   cardDisabled: {
-    opacity: 0.62,
+    opacity: 0.55,
   },
   cardBusy: {
-    borderColor: `${colors.warning}88`,
+    borderColor: colors.accent,
   },
   top: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 8,
-    marginBottom: 2,
+    gap: spacing.sm,
   },
   badge: {
-    backgroundColor: `${colors.primary}18`,
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    backgroundColor: colors.surface,
+    borderRadius: radii.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: `${colors.accent}40`,
   },
   badgeText: {
-    fontSize: 11,
-    color: colors.primary,
+    ...typeScale.micro,
+    color: colors.accent,
     textTransform: 'capitalize',
   },
   lockPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    backgroundColor: `${colors.warning}18`,
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    gap: spacing.xs,
+    backgroundColor: colors.surface,
+    borderRadius: radii.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
     maxWidth: '62%',
   },
   lockText: {
-    fontSize: 11,
+    ...typeScale.micro,
     color: colors.text,
     flexShrink: 1,
   },
   title: {
-    fontSize: 17,
+    ...typeScale.section,
     color: colors.text,
+    marginTop: spacing.xs,
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.sm,
   },
   meta: {
-    fontSize: 13,
-    color: colors.secondary,
+    ...typeScale.label,
+    color: colors.muted,
     flex: 1,
   },
 });

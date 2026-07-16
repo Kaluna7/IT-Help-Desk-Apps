@@ -1,6 +1,10 @@
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PlatformPressable } from '@react-navigation/elements';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import {
+  getFocusedRouteNameFromRoute,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 import {
   Home,
   ClipboardList,
@@ -11,6 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeScreen } from '../features/home';
 import { ReportNavigator } from '../features/report';
+import type { ReportStackParamList } from '../features/report/ReportNavigator';
 import { RequestScreen } from '../features/request';
 import { HistoryNavigator } from '../features/history';
 import { ProfileScreen } from '../features/profile';
@@ -20,7 +25,7 @@ import { useResponsive } from '../shared/hooks';
 
 export type RootTabParamList = {
   Home: undefined;
-  Report: undefined;
+  Report: NavigatorScreenParams<ReportStackParamList>;
   Request: undefined;
   History: undefined;
   Profile: undefined;
@@ -36,12 +41,14 @@ export function AppNavigator() {
   const { tabLabelSize } = useResponsive();
 
   const tabBarStyle = {
-    backgroundColor: colors.background,
+    backgroundColor: colors.card,
     borderTopColor: colors.border,
-    borderTopWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
     height: TAB_BAR_CONTENT_HEIGHT + paddingBottom,
-    paddingTop: 8,
+    paddingTop: 10,
     paddingBottom,
+    elevation: 0,
+    shadowOpacity: 0,
   };
 
   return (
@@ -49,7 +56,7 @@ export function AppNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.secondary,
+        tabBarInactiveTintColor: colors.muted,
         tabBarActiveBackgroundColor: 'transparent',
         tabBarInactiveBackgroundColor: 'transparent',
         tabBarButton: props => (

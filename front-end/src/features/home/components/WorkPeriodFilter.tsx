@@ -1,20 +1,24 @@
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import { AppText } from '../../../shared/components';
 import { colors, radii, spacing } from '../../../shared/constants';
-import { HistoryStatus } from '../types';
+import { WorkPeriod } from '../types';
 
 type FilterOption = {
   label: string;
-  value: HistoryStatus;
+  value: WorkPeriod;
 };
 
-type HistoryFilterProps = {
+type WorkPeriodFilterProps = {
   options: FilterOption[];
-  value: HistoryStatus;
-  onChange: (value: HistoryStatus) => void;
+  value: WorkPeriod;
+  onChange: (value: WorkPeriod) => void;
 };
 
-export function HistoryFilter({ options, value, onChange }: HistoryFilterProps) {
+export function WorkPeriodFilter({
+  options,
+  value,
+  onChange,
+}: WorkPeriodFilterProps) {
   return (
     <ScrollView
       horizontal
@@ -49,8 +53,8 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     backgroundColor: colors.card,
-    borderRadius: radii.sm,
-    paddingHorizontal: spacing.md,
+    borderRadius: radii.full,
+    paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
   },
   chipActive: {

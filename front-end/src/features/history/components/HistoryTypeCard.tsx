@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { LucideIcon, ChevronRight } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useResponsive } from '../../../shared/hooks';
 
 type HistoryTypeCardProps = {
@@ -24,21 +24,21 @@ export function HistoryTypeCard({
       onPress={onPress}
       style={({ pressed }) => [
         styles.card,
-        { padding: isSmall ? 14 : 16, gap: isSmall ? 10 : 14 },
+        { padding: isSmall ? spacing.md : spacing.lg, gap: spacing.md },
         pressed && styles.cardPressed,
       ]}
       android_ripple={{ color: 'transparent' }}>
       <View
         style={[
           styles.iconWrap,
-          { width: ms(48), height: ms(48), borderRadius: ms(14) },
+          { width: ms(44), height: ms(44), borderRadius: radii.md },
         ]}>
-        <Icon color={colors.primary} size={ms(24)} />
+        <Icon color={colors.primary} size={ms(20)} strokeWidth={1.75} />
       </View>
       <View style={styles.textWrap}>
         <AppText
-          weight="bold"
-          style={[styles.title, { fontSize: ms(16) }]}
+          weight="semiBold"
+          style={[styles.title, { fontSize: ms(15) }]}
           numberOfLines={1}>
           {title}
         </AppText>
@@ -48,7 +48,7 @@ export function HistoryTypeCard({
           {description}
         </AppText>
       </View>
-      <ChevronRight color={colors.secondary} size={ms(20)} />
+      <ChevronRight color={colors.muted} size={ms(18)} strokeWidth={1.75} />
     </Pressable>
   );
 }
@@ -58,17 +58,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 16,
+    borderRadius: radii.lg,
     width: '100%',
   },
   cardPressed: {
     borderColor: colors.primary,
-    backgroundColor: `${colors.primary}08`,
+    backgroundColor: colors.surface,
   },
   iconWrap: {
-    backgroundColor: `${colors.primary}18`,
+    backgroundColor: colors.background,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
@@ -81,8 +83,8 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   description: {
-    marginTop: 4,
+    marginTop: spacing.xs,
     lineHeight: 18,
-    color: colors.secondary,
+    color: colors.muted,
   },
 });

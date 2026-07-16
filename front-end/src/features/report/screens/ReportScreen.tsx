@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Plus } from 'lucide-react-native';
 import { AppText, SafeScreen } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useLanguage } from '../../../shared/i18n';
 import { useAuth } from '../../auth';
 import {
@@ -320,7 +320,7 @@ export function ReportScreen() {
                   styles.addButton,
                   pressed && Platform.OS === 'ios' && styles.addButtonPressed,
                 ]}>
-                <Plus color={colors.background} size={22} strokeWidth={2.75} />
+                <Plus color={colors.onPrimary} size={22} strokeWidth={2.75} />
               </Pressable>
             </View>
           ) : undefined
@@ -494,14 +494,14 @@ const styles = StyleSheet.create({
   circleWrap: {
     width: ADD_SIZE,
     height: ADD_SIZE,
-    borderRadius: ADD_SIZE / 2,
+    borderRadius: radii.md,
     overflow: 'hidden',
     backgroundColor: colors.primary,
   },
   addButton: {
     width: ADD_SIZE,
     height: ADD_SIZE,
-    borderRadius: ADD_SIZE / 2,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
@@ -513,47 +513,48 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    gap: 8,
-    marginBottom: 14,
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+    padding: spacing.xs,
+    borderRadius: radii.md,
+    backgroundColor: colors.card,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
   },
   tab: {
     flex: 1,
-    height: 42,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.card,
+    height: 40,
+    borderRadius: radii.sm,
     alignItems: 'center',
     justifyContent: 'center',
   },
   tabActive: {
     backgroundColor: colors.primary,
-    borderColor: colors.primary,
   },
   tabText: {
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
   },
   tabTextActive: {
-    color: colors.background,
+    color: colors.onPrimary,
   },
   list: {
-    gap: 12,
-    paddingBottom: 8,
+    gap: spacing.md,
+    paddingBottom: spacing.sm,
   },
   dayGroup: {
-    borderWidth: 1.5,
-    borderColor: colors.primary,
-    borderRadius: 16,
-    padding: 12,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    borderRadius: radii.lg,
+    padding: spacing.md,
     backgroundColor: colors.card,
-    gap: 10,
+    gap: spacing.md,
   },
   dayHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: spacing.sm,
   },
   dayTitle: {
     fontSize: 15,
@@ -562,25 +563,25 @@ const styles = StyleSheet.create({
   },
   dayMeta: {
     fontSize: 12,
-    color: colors.secondary,
+    color: colors.muted,
   },
   dayCheckers: {
     fontSize: 12,
     color: colors.text,
   },
   dayList: {
-    gap: 10,
+    gap: spacing.sm,
   },
   center: {
-    paddingVertical: 40,
+    paddingVertical: spacing.xxl,
     alignItems: 'center',
   },
   empty: {
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: 24,
+    borderRadius: radii.lg,
+    padding: spacing.xl,
     alignItems: 'center',
   },
   emptyTitle: {
@@ -588,9 +589,9 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   emptyMessage: {
-    marginTop: 6,
+    marginTop: spacing.xs,
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
     textAlign: 'center',
   },
   error: {

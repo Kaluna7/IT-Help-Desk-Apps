@@ -251,7 +251,7 @@ export function ReportHistoryScreen() {
                   }>
                   <View style={styles.folderLeft}>
                     <View style={styles.folderIcon}>
-                      <Folder color={colors.primary} size={18} />
+                      <Folder color={colors.accent} size={18} />
                     </View>
                     <View>
                       <AppText weight="bold" style={styles.folderTitle}>
@@ -265,9 +265,9 @@ export function ReportHistoryScreen() {
                     </View>
                   </View>
                   {open ? (
-                    <ChevronDown color={colors.secondary} size={18} />
+                    <ChevronDown color={colors.muted} size={18} />
                   ) : (
-                    <ChevronRight color={colors.secondary} size={18} />
+                    <ChevronRight color={colors.muted} size={18} />
                   )}
                 </Pressable>
 
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: `${colors.primary}18`,
+    backgroundColor: `${colors.accent}22`,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   folderMeta: {
     marginTop: 2,
     fontSize: 12,
-    color: colors.secondary,
+    color: colors.muted,
   },
   dayCard: {
     marginHorizontal: 10,
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
   fileMeta: {
     marginTop: 3,
     fontSize: 12,
-    color: colors.secondary,
+    color: colors.muted,
   },
   checkers: {
     fontSize: 12,
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
   },
   locationItem: {
     fontSize: 12,
-    color: colors.secondary,
+    color: colors.muted,
   },
   empty: {
     marginTop: 14,
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
   emptyMessage: {
     marginTop: 6,
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
     textAlign: 'center',
   },
   error: {

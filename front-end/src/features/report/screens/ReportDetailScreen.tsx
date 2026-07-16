@@ -15,7 +15,7 @@ import {
 import type { RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppText, SafeScreen } from '../../../shared/components';
-import { colors, fonts } from '../../../shared/constants';
+import { colors, fonts, radii, spacing } from '../../../shared/constants';
 import { useLanguage } from '../../../shared/i18n';
 import { useAuth } from '../../auth';
 import {
@@ -372,7 +372,7 @@ export function ReportDetailScreen() {
         disabled={!canComplete || saving || report.status === 'completed'}
         onPress={onComplete}>
         {saving ? (
-          <ActivityIndicator color={colors.background} />
+          <ActivityIndicator color={colors.onPrimary} />
         ) : (
           <AppText weight="bold" style={styles.completeText}>
             {report.status === 'completed'
@@ -389,25 +389,25 @@ export function ReportDetailScreen() {
 
 const styles = StyleSheet.create({
   metaCard: {
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
     backgroundColor: colors.card,
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 14,
-    gap: 8,
+    borderRadius: radii.lg,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+    gap: spacing.sm,
   },
   label: {
-    marginTop: 4,
+    marginTop: spacing.xs,
     fontSize: 13,
-    color: colors.secondary,
+    color: colors.muted,
   },
   input: {
     minHeight: 46,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 12,
-    paddingHorizontal: 12,
+    borderRadius: radii.md,
+    paddingHorizontal: spacing.md,
     backgroundColor: colors.background,
     color: colors.text,
     fontFamily: fonts.regular,
@@ -415,42 +415,42 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.danger,
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
   retryBtn: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 12,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm + 2,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
   },
   retryText: {
-    color: colors.background,
+    color: colors.onPrimary,
     fontSize: 14,
   },
   completeBtn: {
-    marginTop: 8,
-    marginBottom: 20,
+    marginTop: spacing.sm,
+    marginBottom: spacing.xl,
     height: 52,
-    borderRadius: 14,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   completeDisabled: {
-    backgroundColor: '#D1D5DB',
+    backgroundColor: colors.disabled,
   },
   completeText: {
-    color: colors.background,
+    color: colors.onPrimary,
     fontSize: 15,
   },
   center: {
-    paddingVertical: 40,
+    paddingVertical: spacing.xxl,
     alignItems: 'center',
-    gap: 12,
+    gap: spacing.md,
   },
   loadingText: {
-    color: colors.secondary,
+    color: colors.muted,
     fontSize: 13,
   },
 });

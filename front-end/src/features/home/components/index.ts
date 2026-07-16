@@ -1,2 +1,2 @@
-// Home-only components
-export {};
+export { WorkLocationFilter } from './WorkLocationFilter';
+export { WorkLocationCard } from './WorkLocationCard';

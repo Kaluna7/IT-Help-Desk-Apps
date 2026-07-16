@@ -2,20 +2,20 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "src/assets/fonts/Inter-Bold.ttf",
-      "sha1": "22b4310d6068f4bfe1f07b7535bf9590a704373b"
+      "path": "src/assets/fonts/GeneralSans-Bold.ttf",
+      "sha1": "2dc5b9908d7f2465aff2bed5243cdff8907ad27d"
     },
     {
-      "path": "src/assets/fonts/Inter-Medium.ttf",
-      "sha1": "8cd863c58fe001e28483a3b5e28e1bc6dea0d601"
+      "path": "src/assets/fonts/GeneralSans-Medium.ttf",
+      "sha1": "76717a55871484c722d660428ea7100d1a8646da"
     },
     {
-      "path": "src/assets/fonts/Inter-Regular.ttf",
-      "sha1": "418d48dd8aaf07380b6b1c221603b92c5d5804c2"
+      "path": "src/assets/fonts/GeneralSans-Regular.ttf",
+      "sha1": "8c7219592ebe79f7b0fd9b9a7bbda5ac208bf7b7"
     },
     {
-      "path": "src/assets/fonts/Inter-SemiBold.ttf",
-      "sha1": "a7bebff156414566eb8743cedf91b7dd08ea256c"
+      "path": "src/assets/fonts/GeneralSans-Semibold.ttf",
+      "sha1": "3775300e113dff8ce95a71f38df6f5dd37c3de48"
     }
   ]
 }

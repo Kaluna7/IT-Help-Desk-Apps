@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { ChevronDown, ChevronRight, Folder } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors } from '../../../shared/constants';
+import { colors, radii, spacing } from '../../../shared/constants';
 import { useResponsive } from '../../../shared/hooks';
 import { HistoryItem } from '../types';
 import { formatItemDate, formatStatusLabel } from '../utils';
@@ -33,7 +33,7 @@ export function MonthFolderCard({
               styles.folderIcon,
               { width: ms(40), height: ms(40) },
             ]}>
-            <Folder color={colors.primary} size={ms(18)} />
+            <Folder color={colors.accent} size={ms(18)} />
           </View>
           <View style={styles.folderText}>
             <AppText
@@ -50,9 +50,9 @@ export function MonthFolderCard({
           </View>
         </View>
         {expanded ? (
-          <ChevronDown color={colors.secondary} size={ms(18)} />
+          <ChevronDown color={colors.muted} size={ms(18)} />
         ) : (
-          <ChevronRight color={colors.secondary} size={ms(18)} />
+          <ChevronRight color={colors.muted} size={ms(18)} />
         )}
       </Pressable>
 
@@ -84,9 +84,9 @@ export function MonthFolderCard({
 const styles = StyleSheet.create({
   folder: {
     backgroundColor: colors.card,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 16,
+    borderRadius: radii.lg,
     overflow: 'hidden',
     width: '100%',
   },
@@ -94,18 +94,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 14,
+    padding: spacing.md,
   },
   folderLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: spacing.md,
     flex: 1,
     minWidth: 0,
   },
   folderIcon: {
-    borderRadius: 12,
-    backgroundColor: `${colors.primary}18`,
+    borderRadius: radii.md,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
@@ -119,24 +119,24 @@ const styles = StyleSheet.create({
   },
   folderMeta: {
     marginTop: 2,
-    color: colors.secondary,
+    color: colors.muted,
   },
   item: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderTopWidth: 1,
+    gap: spacing.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.border,
     backgroundColor: colors.background,
   },
   itemDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: colors.primary,
-    marginTop: 6,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.accent,
+    marginTop: 7,
     flexShrink: 0,
   },
   itemBody: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   itemMeta: {
-    marginTop: 4,
-    color: colors.secondary,
+    marginTop: spacing.xs,
+    color: colors.muted,
   },
 });

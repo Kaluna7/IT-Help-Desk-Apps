@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Eye, EyeOff, LucideIcon } from 'lucide-react-native';
 import { AppText } from '../../../shared/components';
-import { colors, fonts } from '../../../shared/constants';
+import { colors, fonts, radii, spacing, typeScale } from '../../../shared/constants';
 
 type AuthFieldProps = TextInputProps & {
   label: string;
@@ -32,18 +32,19 @@ export function AuthField({
 
   return (
     <View style={styles.field}>
-      <AppText weight="semiBold" style={styles.label}>
+      <AppText weight="medium" style={styles.label}>
         {label}
       </AppText>
       <View style={[styles.inputWrap, focused && styles.inputWrapFocused]}>
         <Icon
-          color={focused ? colors.primary : colors.secondary}
+          color={focused ? colors.primary : colors.muted}
           size={18}
+          strokeWidth={1.75}
         />
         <TextInput
           {...props}
           secureTextEntry={isPassword ? !showPassword : props.secureTextEntry}
-          placeholderTextColor={colors.secondary}
+          placeholderTextColor={colors.muted}
           onFocus={e => {
             setFocused(true);
             props.onFocus?.(e);
@@ -60,9 +61,9 @@ export function AuthField({
             hitSlop={8}
             accessibilityRole="button">
             {showPassword ? (
-              <EyeOff color={colors.secondary} size={18} />
+              <EyeOff color={colors.muted} size={18} strokeWidth={1.75} />
             ) : (
-              <Eye color={colors.secondary} size={18} />
+              <Eye color={colors.muted} size={18} strokeWidth={1.75} />
             )}
           </Pressable>
         ) : null}
@@ -106,7 +107,7 @@ export function AuthLayout({
             </View>
 
             <View style={styles.heroCopy}>
-              <AppText weight="semiBold" style={styles.eyebrow}>
+              <AppText weight="medium" style={styles.eyebrow}>
                 {eyebrow}
               </AppText>
               <AppText weight="bold" style={styles.title}>
@@ -135,100 +136,88 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flexGrow: 1,
-    paddingBottom: 28,
+    paddingBottom: spacing.xxl,
   },
   hero: {
-    paddingHorizontal: 24,
-    paddingTop: 18,
-    paddingBottom: 28,
-    backgroundColor: `${colors.primary}0D`,
-    borderBottomWidth: 1,
-    borderBottomColor: `${colors.primary}22`,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xl,
   },
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 28,
+    gap: spacing.sm,
+    marginBottom: spacing.xxl,
   },
   brandMark: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: 36,
+    height: 36,
+    borderRadius: radii.md,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   brandMarkText: {
-    color: colors.background,
-    fontSize: 15,
-    letterSpacing: 0.3,
+    color: colors.onPrimary,
+    fontSize: 13,
+    letterSpacing: 0.4,
   },
   brandName: {
-    fontSize: 20,
+    fontSize: 18,
     color: colors.text,
-    letterSpacing: -0.3,
+    letterSpacing: -0.2,
   },
   heroCopy: {
-    gap: 8,
+    gap: spacing.sm,
   },
   eyebrow: {
-    fontSize: 12,
-    color: colors.hover,
+    ...typeScale.caption,
+    color: colors.accent,
     textTransform: 'uppercase',
-    letterSpacing: 1.1,
+    letterSpacing: 1.2,
   },
   title: {
-    fontSize: 30,
-    lineHeight: 36,
+    ...typeScale.display,
     color: colors.text,
-    letterSpacing: -0.6,
   },
   subtitle: {
-    fontSize: 15,
-    lineHeight: 22,
-    color: colors.secondary,
+    ...typeScale.body,
+    color: colors.muted,
     maxWidth: 320,
   },
   panel: {
-    marginTop: -12,
-    marginHorizontal: 16,
-    paddingHorizontal: 18,
-    paddingTop: 22,
-    paddingBottom: 20,
-    backgroundColor: colors.background,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.border,
+    marginHorizontal: spacing.xl,
+    paddingTop: spacing.sm,
+    gap: 0,
   },
   field: {
-    marginBottom: 14,
+    marginBottom: spacing.lg,
   },
   label: {
-    fontSize: 13,
+    ...typeScale.label,
     color: colors.text,
-    marginBottom: 8,
+    marginBottom: spacing.sm,
   },
   inputWrap: {
     minHeight: 52,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.border,
-    borderRadius: 14,
+    borderRadius: radii.md,
     backgroundColor: colors.card,
-    paddingHorizontal: 14,
+    paddingHorizontal: spacing.lg,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: spacing.md,
   },
   inputWrapFocused: {
+    borderWidth: 1,
     borderColor: colors.primary,
-    backgroundColor: colors.background,
   },
   input: {
     flex: 1,
     color: colors.text,
     fontFamily: fonts.regular,
-    fontSize: 15,
+    fontSize: typeScale.body.fontSize,
     paddingVertical: Platform.OS === 'ios' ? 14 : 10,
   },
 });
